@@ -1,0 +1,108 @@
+<mat-card>
+    <form (submit)="onSearch(searchForm)" #searchForm="ngForm">
+        <mat-form-field>
+            <input matInput type="text" name="author" ngModel placeholder="Unesite ime autora" #authorInput="ngModel">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" name="name" ngModel placeholder="Unesite naziv knjige" #nameInput="ngModel">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Izaberite zanr</mat-label>
+            <mat-select name="genre" ngModel>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let genre of genres" [value]="genre">{{genre}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="accent" type="submit">Pretrazi</button>
+    </form>
+</mat-card>
+<mat-card>
+    <mat-list *ngIf="books.length>0">
+        <mat-list-item *ngFor="let book of books; last as last">
+            <h3 matLine class="user-image">
+                <img [src]="book.imagePath" [alt]="book.name">
+            </h3>
+            <p matLine>
+                <span>
+                    <b>Naziv knjige:</b> {{book.name}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Autori knjige:</b> {{book.authors}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Datum izdavanja:</b> {{book.publishDate | date: 'yyyy-MM-dd'}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Zanrovi:</b> {{book.genres}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Opis:</b> {{book.description}} </span>
+            </p>
+            <p matLine>
+                <span *ngIf="book.averageReview != 0">
+                    <b>Prosecna ocena:</b> {{book.averageReview}} </span>
+                <span *ngIf="book.averageReview == 0">
+                    <b>Prosecna ocena:</b> -
+                </span>
+            </p>
+                <button matLine mat-raised-button color="accent" (click)="onPickedBook(book._id)">
+                    Idite na stranicu knjige
+                </button>
+                <span *ngIf="isLoggedInUser">
+                    <button matLine mat-raised-button color="primary" (click)="onChangeBook(book._id)" *ngIf="loggedInUser.type == 'admin'">
+                         Promeni informacije knjige
+                    </button>  
+                </span>
+            <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+        </mat-list-item>
+    </mat-list>
+    <mat-list *ngIf="bookRequests.length>0">
+        <mat-list-item *ngFor="let book of bookRequests; last as last" class="book-request-item">
+            <h3 matLine class="user-image">
+                <img [src]="book.imagePath" [alt]="book.name">
+            </h3>
+            <p matLine>
+                <span>
+                    <b>Naziv knjige:</b> {{book.name}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Autori knjige:</b> {{book.authors}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Datum izdavanja:</b> {{book.publishDate | date: 'yyyy-MM-dd'}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Zanrovi:</b> {{book.genres}} </span>
+            </p>
+            <p matLine class="description">
+                <span>
+                    <b>Opis:</b> {{book.description}} </span>
+            </p>
+            <p matLine>
+                <span *ngIf="book.averageReview != 0">
+                    <b>Prosecna ocena:</b> {{book.averageReview}} </span>
+                <span *ngIf="book.averageReview == 0">
+                    <b>Prosecna ocena:</b> -
+                </span>
+            </p>
+            <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+        </mat-list-item>
+    </mat-list>
+    <mat-list *ngIf="books.length<=0 && searchedForBook">
+        <mat-list-item>
+            <span class="message">
+                {{ message }}
+            </span>
+        </mat-list-item>
+        <mat-list-item>
+            <a mat-raised-button color="accent" routerLink="/add-book">Dodaj novu knjigu</a>
+        </mat-list-item>
+    </mat-list>
+</mat-card>

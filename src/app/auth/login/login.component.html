@@ -1,0 +1,31 @@
+<mat-card>
+    <form (submit)="onLogin(loginForm)" #loginForm="ngForm">
+        <mat-form-field>
+            <input matInput type="text" 
+            name="username"
+            ngModel
+            placeholder="Korisnicko ime"
+            #usernameInput="ngModel"
+            required
+            >
+            <mat-error *ngIf="usernameInput.invalid">Molimo unesite korisnicko ime</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="password" 
+            name="password"
+            ngModel
+            placeholder="Lozinka"
+            #passwordInput="ngModel"
+            required
+            >
+            <mat-error *ngIf="passwordInput.invalid">Molimo unesite lozinku</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="accent" type="submit">Prijava</button>
+    </form>
+</mat-card>
+<mat-card>
+    <mat-card-content>
+        <a routerLink="/signup">Zaboravili ste lozinku?</a>
+    </mat-card-content>
+</mat-card>
+<mat-error>{{ message }}</mat-error>

@@ -1,0 +1,91 @@
+<form [formGroup]="form" (submit)="onAdd()">
+    <mat-horizontal-stepper [linear]="true">
+        <mat-step label="Unesite naziv">
+            <mat-form-field>
+                <mat-label>Unesite naziv dogadjaja</mat-label>
+                <input matInput type="text"
+                formControlName="name">
+                <mat-error *ngIf="form.get('name').invalid">Molimo unesite naziv dogadjaja</mat-error>
+                <br><br>
+                <div>
+                    <button mat-button matStepperNext type="button">Next</button>
+                </div>
+            </mat-form-field>
+        </mat-step>
+        <mat-step label="Unesite datume">
+            <mat-form-field>
+                <mat-label>Unesite datum pocetka dogadjaja</mat-label>
+                <input matInput [matDatepicker]="picker1"
+                formControlName="beginDate"
+                >
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <mat-error *ngIf="form.get('beginDate').invalid">Molimo unesite datum pocetka</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Unesite datum zavrsetka dogadjaja</mat-label>
+                <input matInput [matDatepicker]="picker2"
+                formControlName="endDate"
+                >
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+                <mat-error *ngIf="form.get('endDate').invalid">Molimo unesite datum zavrsetka</mat-error>
+            </mat-form-field>
+            <br><br>
+            <div>
+                <button mat-button matStepperPrevious type="button">Back</button>
+                <button mat-button matStepperNext type="button">Next</button>
+            </div>
+        </mat-step>
+        <mat-step label="Aktivan dogadjaj?">
+                <mat-radio-group aria-label="Izaberite opciju" formControlName="isActive">
+                    <mat-radio-button value="Yes">Da </mat-radio-button>&nbsp;&nbsp;
+                    <mat-radio-button value="No">Ne</mat-radio-button>
+                </mat-radio-group>
+                <br><br>
+                <div>
+                        <button mat-button matStepperPrevious type="button">Back</button>
+                        <button mat-button matStepperNext type="button">Next</button>
+                    </div>
+        </mat-step>
+        <mat-step label="Privatan dogadjaj?">
+            <mat-radio-group aria-label="Izaberite opciju" formControlName="isPrivate" (change)="onChange($event)">
+                <mat-radio-button value="Yes">Da </mat-radio-button>&nbsp;&nbsp;
+                <mat-radio-button value="No" *ngIf="loggedInUser.type == 'moderator' || loggedInUser.type == 'admin'">Ne</mat-radio-button>
+            </mat-radio-group>
+            <br><br>
+            <span *ngIf="currentStatus == 'Yes'">
+                <mat-form-field>
+                    <mat-label>Izaberite ucesnike</mat-label> 
+                    <mat-select formControlName="participants" multiple>
+                        <mat-option *ngFor="let follow of stringFollows" [value]="follow">{{follow}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </span>
+            <div>
+                <button mat-button matStepperPrevious type="button">Back</button>
+                <button mat-button matStepperNext type="button">Next</button>
+            </div>
+        </mat-step>
+        <mat-step label="Unesite opis">
+            <mat-form-field>
+                <mat-label>Unesite kratak opis dogadjaja</mat-label>
+                <textarea matInput
+                formControlName="description"></textarea>
+                <mat-error *ngIf="form.get('description').invalid">Molimo unesite kratak opis</mat-error>
+            </mat-form-field>
+            <br><br>
+            <div>
+                <button mat-button matStepperPrevious type="button">Back</button>
+                <button mat-button matStepperNext type="button">Next</button>
+            </div>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            <div>
+                    <button mat-button matStepperPrevious type="button">Back</button>
+                <button mat-raised-button color="primary" type="submit">Dodaj dogadjaj</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</form>

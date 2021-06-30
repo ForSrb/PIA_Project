@@ -1,0 +1,208 @@
+<mat-card *ngIf="regularUser && !isSpinner">
+    <mat-card-title>
+        Informacije o profilu:
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <img mat-card-image [src]="regularUser.imagePath" [alt]="regularUser.username" class="profile_image">
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <b>Ime: </b>&nbsp;&nbsp;&nbsp; {{regularUser.name}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Prezime: </b>&nbsp;&nbsp;&nbsp; {{regularUser.surrname}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Datum rodjenja: </b>&nbsp;&nbsp;&nbsp; {{regularUser.dateOfBirth | date: 'yyyy-MM-dd'}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Grad stanovanja: </b>&nbsp;&nbsp;&nbsp; {{regularUser.city}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Drzava stanovanja: </b>&nbsp;&nbsp;&nbsp; {{regularUser.country}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Korisnicko ime: </b>&nbsp;&nbsp;&nbsp; {{regularUser.username}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Email: </b>&nbsp;&nbsp;&nbsp; {{regularUser.email}}
+            </mat-list-item>
+            <a mat-raised-button color="primary" routerLink="/change_user_attribute">Promeni</a>
+        </mat-list>
+    </mat-card-content>
+</mat-card>
+<mat-spinner *ngIf="isSpinner"></mat-spinner>
+<mat-accordion *ngIf="isBooksDone && isBookUsersDone">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <b>Pregled procitanih knjiga:</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list *ngIf="completedBooks.length>0">
+            <mat-list-item *ngFor="let book of completedBooks; last as last">
+                <h3 matLine class="user-image">
+                    <img [src]="book.imagePath" [alt]="book.name">
+                </h3>
+                <p matLine>
+                    <span>
+                        <b>Naziv knjige:</b> {{book.name}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Autori knjige:</b> {{book.authors}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Datum izdavanja:</b> {{book.publishDate | date: 'yyyy-MM-dd'}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Zanrovi:</b> {{book.genres}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Opis:</b> {{book.description}} </span>
+                </p>
+                <p matLine>
+                    <span *ngIf="book.averageReview != 0">
+                        <b>Prosecna ocena:</b> {{book.averageReview}} </span>
+                    <span *ngIf="book.averageReview == 0">
+                        <b>Prosecna ocena:</b> -
+                    </span>
+                </p>
+                <button matLine mat-raised-button color="accent" (click)="onPickedBook(book._id)">
+                    Idite na stranicu knjige
+                </button>
+                <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+            </mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <b>Pregled knjiga koje trenutno citate:</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list *ngIf="readingBooks.length>0">
+            <mat-list-item *ngFor="let book of readingBooks; last as last">
+                <h3 matLine class="user-image">
+                    <img [src]="book.imagePath" [alt]="book.name">
+                </h3>
+                <p matLine>
+                    <span>
+                        <b>Naziv knjige:</b> {{book.name}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Autori knjige:</b> {{book.authors}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Datum izdavanja:</b> {{book.publishDate | date: 'yyyy-MM-dd'}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Zanrovi:</b> {{book.genres}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Opis:</b> {{book.description}} </span>
+                </p>
+                <p matLine>
+                    <span *ngIf="book.averageReview != 0">
+                        <b>Prosecna ocena:</b> {{book.averageReview}} </span>
+                    <span *ngIf="book.averageReview == 0">
+                        <b>Prosecna ocena:</b> -
+                    </span>
+                </p>
+                <button matLine mat-raised-button color="accent" (click)="onPickedBook(book._id)">
+                    Idite na stranicu knjige
+                </button>
+                <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+            </mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <b>Pregled knjiga na listi za citanje:</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list *ngIf="wishlistBooks.length>0">
+            <mat-list-item *ngFor="let book of wishlistBooks; last as last">
+                <h3 matLine class="user-image">
+                    <img [src]="book.imagePath" [alt]="book.name">
+                </h3>
+                <p matLine>
+                    <span>
+                        <b>Naziv knjige:</b> {{book.name}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Autori knjige:</b> {{book.authors}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Datum izdavanja:</b> {{book.publishDate | date: 'yyyy-MM-dd'}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Zanrovi:</b> {{book.genres}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Opis:</b> {{book.description}} </span>
+                </p>
+                <p matLine>
+                    <span *ngIf="book.averageReview != 0">
+                        <b>Prosecna ocena:</b> {{book.averageReview}} </span>
+                    <span *ngIf="book.averageReview == 0">
+                        <b>Prosecna ocena:</b> -
+                    </span>
+                </p>
+                <mat-action-list>
+                    <button mat-raised-button color="warn" (click)="removeFromWishlist(book._id)">Ukloni sa liste</button>
+                </mat-action-list>
+                <button matLine mat-raised-button color="accent" (click)="onPickedBook(book._id)">
+                    Idite na stranicu knjige
+                </button>
+                <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+            </mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+</mat-accordion>
+<mat-spinner *ngIf="!(isBooksDone && isBookUsersDone)"></mat-spinner>
+<br><br><br>
+<h3><b>VASI KOMENTARI:</b></h3>
+<table *ngIf="isComments && bookComments.length > 0">
+    <thead>
+        <th>Naziv knjige</th>
+        <th>Autori knjige</th>
+        <th>Ocena</th>
+        <th>Komentar</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let comment of bookComments">
+            <td>
+                <button mat-button (click)="onPickedBook(comment.bookId)">
+                    {{comment.name}}
+                </button>
+            </td>
+            <td>{{comment.authors}}</td>
+            <td>{{comment.review}}</td>
+            <td>{{comment.content}}</td>
+            <td><button mat-raised-button color="accent"
+                (click)="onChangeComment(comment.commentId)">Promeni</button></td>
+        </tr>
+    </tbody>
+</table>
+<p *ngIf="bookComments.length == 0 && isComments" class="message">Nema komentara</p>
+<mat-spinner *ngIf="!isComments"></mat-spinner>

@@ -1,0 +1,10 @@
+*Angular material - npm install --save @angular/material + ng add @angular/material
+*Nodemon(za restartovanje nodejs servera nakon sto sacuvamo promenu u kodu) - npm install --save-dev nodemon
+*Body-parser - npm install --save body-parser
+*ng-recaptcha - npm install ng-recaptcha --save
+*express - npm install --save express
+*mongoose - npm install --save mongoose
+*mongoose-unique-validator - npm install --save mongoose-unique-validator
+*multer - npm install --save multer
+
+

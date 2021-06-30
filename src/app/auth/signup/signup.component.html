@@ -1,0 +1,81 @@
+<mat-card>
+    <form [formGroup]="form" (submit)="onSignUp()">
+        <mat-form-field>
+            <input matInput type="text"
+            formControlName="name"
+            placeholder="Ime"
+            >
+            <mat-error *ngIf="form.get('name').invalid">Molimo unesite ime</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text"
+            formControlName="surrname"
+            placeholder="Prezime"
+            >
+            <mat-error *ngIf="form.get('surrname').invalid">Molimo unesite prezime</mat-error>
+        </mat-form-field>
+        <div>
+            <button mat-stroked-button type="button" (click)="filePicker.click()">Izaberite sliku za profil</button>
+            <input type="file" #filePicker (change)="onImagePicked($event)">
+        </div>
+        <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+            <img [src]="imagePreview" [alt]="form.value.title">
+        </div>
+        <mat-form-field>
+            <input matInput type="text" 
+            formControlName="username"
+            placeholder="Korisnicko ime"
+            >
+            <mat-error *ngIf="form.get('username').invalid">Molimo unesite korisnicko ime</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="password" 
+            formControlName="password"
+            placeholder="Lozinka"
+            >
+            <mat-error *ngIf="form.get('password').invalid">Molimo unesite lozinku</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="password" 
+            formControlName="passwordAgain"
+            placeholder="Ponovite lozinku"
+            >
+            <mat-error *ngIf="form.get('passwordAgain').invalid">Molimo unesite ponovo lozinku</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker"
+            formControlName="dateOfBirth"
+            placeholder="Datum rodjenja"
+            >
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="form.get('dateOfBirth').invalid">Molimo unesite datum rodjenja</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text"
+            formControlName="city"
+            placeholder="Grad stanovanja"
+            >
+            <mat-error *ngIf="form.get('city').invalid">Molimo unesite grad u kojem zivite</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text"
+            formControlName="country"
+            placeholder="Drzava stanovanja"
+            >
+            <mat-error *ngIf="form.get('country').invalid">Molimo unesite drzavu u kojoj zivite</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="email"
+            formControlName="email"
+            placeholder="E-mail"
+            >
+            <mat-error *ngIf="form.get('email').invalid">Molimo unesite e-mail adresu</mat-error>
+        </mat-form-field>
+           <re-captcha
+            formControlName="recaptcha"
+            siteKey="6LdmhMYZAAAAAL-WdvUf23zR0D468Njzr8C-v1nV"></re-captcha> 
+        <button mat-raised-button color="accent" type="submit">Registracija</button>
+    </form>
+</mat-card>
+<mat-error>{{ message }}</mat-error>

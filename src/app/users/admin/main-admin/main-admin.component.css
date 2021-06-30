@@ -1,0 +1,47 @@
+:host {
+    display: block;
+    margin-top: 1rem;
+}
+
+.user-image {
+    width: 35%;
+}
+
+.user-image img {
+    width: 35%;
+}
+
+.profile_image{
+    height: 200px;
+    width: 200px;
+}
+
+.message {
+    color: red;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+  
+th {
+    background-color: lightblue;
+    color: black;
+}
+  
+th,
+td {
+    width: 150px;
+    text-align: center;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.book-image {
+    width: 30%;
+}
+
+.book-image img {
+    width: 30%;
+}

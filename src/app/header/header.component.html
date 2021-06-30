@@ -1,0 +1,51 @@
+<mat-toolbar color="primary">
+    <span class="logo">
+        <img src="https://cdn.elearningindustry.com/wp-content/uploads/2016/05/top-10-books-every-college-student-read-1024x640.jpeg" alt="">
+    </span>
+    <span *ngIf="isLoggedInUser">
+        <button mat-button (click)="onMainPage()">Pocetna strana</button>
+    </span>
+    <span *ngIf="!isLoggedInUser">
+        <a mat-button routerLink="/login"
+            routerLinkActive="mat-accent">Prijava</a>
+    </span>
+    <span *ngIf="isGuest || isLoggedInUser">
+        <a mat-button routerLink="/search-books"
+            routerLinkActive="mat-accent">Pretraga knjige</a>
+    </span>
+    <span *ngIf="isLoggedInUser">
+        <a mat-button routerLink="/add-book"
+            routerLinkActive="mat-accent">Dodaj knjigu</a>
+    </span>
+    <span *ngIf="isModerator || isAdmin">
+        <a mat-button routerLink="/approve-book"
+            routerLinkActive="mat-accent">
+            Odobravanje knjiga
+        </a>
+    </span>
+    <span *ngIf="isAdmin">
+        <a mat-button routerLink="/genre"
+            routerLinkActive="mat-accent">Zanrovi</a>
+    </span>
+    <span *ngIf="isLoggedInUser">
+        <a mat-button routerLink="/add-event"
+            routerLinkActive="mat-accent">Dodaj dogadjaj</a>
+    </span>
+    <span *ngIf="isGuest || isLoggedInUser">
+        <a mat-button routerLink="/view-event"
+            routerLinkActive="mat-accent">Prikazi dogadjaje</a>
+    </span>
+    <span class="spacer">
+
+    </span>
+    <ul>
+        <li *ngIf="!isLoggedInUser">
+            <a mat-button routerLink="/signup"
+            routerLinkActive="mat-accent">Registracija</a>
+        </li>
+        <li *ngIf="!isLoggedInUser && !isGuest">
+            <a mat-button routerLink="/guest"
+            routerLinkActive="mat-accent">Nastavi kao gost</a>
+        </li>
+    </ul>
+</mat-toolbar>

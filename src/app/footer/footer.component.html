@@ -1,0 +1,14 @@
+<div class="footer">
+<mat-toolbar color="primary">
+    <span *ngIf="isLoggedInUser">
+        <a mat-button routerLink="/change_password"
+            routerLinkActive="mat-accent">Promena lozinke</a>
+    </span>
+    <span class="spacer">
+
+    </span>
+    <span *ngIf="isLoggedInUser">
+        <button mat-button (click)="onLogout()">Odjava</button>
+    </span>
+</mat-toolbar>
+</div>

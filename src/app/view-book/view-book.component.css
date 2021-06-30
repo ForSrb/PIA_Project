@@ -1,0 +1,21 @@
+img{
+    height: 200px;
+    width: 150px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+
+.radio {
+    width: 100%;
+}
+
+mat-form-field{
+    width: 100%;
+}
+
+.message{
+    color: red;
+    font: bold;
+}

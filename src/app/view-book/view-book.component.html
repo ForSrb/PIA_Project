@@ -1,0 +1,137 @@
+<mat-card *ngIf="pickedBook">
+    <img mat-card-image [src]="pickedBook.imagePath" [alt]="pickedBook.name">
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <b>Naziv knjige: </b>&nbsp;&nbsp;&nbsp;
+                {{pickedBook.name}}
+            </mat-list-item>
+            <mat-list-item>
+                <b>Autori knjige:  </b>&nbsp;&nbsp;&nbsp;
+                {{pickedBook.authors}}
+            </mat-list-item>
+            <mat-list-item>
+                <b>Datum izdavanja knjige:  </b>&nbsp;&nbsp;&nbsp;
+                {{pickedBook.publishDate | date: 'yyyy-MM-dd'}}
+            </mat-list-item>
+            <mat-list-item>
+                <b>Zanr(ovi) knjige:  </b>&nbsp;&nbsp;&nbsp;
+                {{pickedBook.genres}}
+            </mat-list-item>
+            <mat-list-item>
+                <b>Opis knjige:  </b>
+                {{pickedBook.description}}
+             </mat-list-item>
+             <mat-list-item>
+                <b>Prosecna ocena knjige:  </b>&nbsp;&nbsp;&nbsp;
+                <span *ngIf="pickedBook.averageReview == 0">
+                    -
+                </span>
+                <span *ngIf="pickedBook.averageReview != 0">
+                    {{pickedBook.averageReview}}
+                </span>
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+</mat-card>
+<mat-divider></mat-divider>
+<mat-spinner *ngIf="!pickedBook"></mat-spinner>
+<br><br><br>
+<h3><b>KOMENTARI:</b></h3>
+<mat-accordion *ngIf="isComments && comments.length > 0">
+    <mat-expansion-panel *ngFor="let comment of comments">
+        <mat-expansion-panel-header>
+            <mat-panel-title *ngIf="isLoggedInUser">
+                <button mat-raised-button color="primary" 
+                (click)="onPickedUser(comment.user)"
+                *ngIf="loggedInUser.username != comment.user"><b>{{ comment.user }}</b></button>
+                <span *ngIf="loggedInUser.username == comment.user">
+                    <b>{{ comment.user}}</b>
+                </span>  
+            </mat-panel-title>
+            <mat-panel-title *ngIf="!isLoggedInUser">
+                <b>Anonymous</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+            <mat-list-item>
+                <p matLine>
+                    <span>
+                        <b>Ocena:</b> {{comment.review}} </span>
+                </p>   
+            </mat-list-item>
+            <mat-list-item>
+                <p matLine>
+                    <span>
+                        <b>Komentar:</b> {{comment.content}} </span>
+                </p>
+            </mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+</mat-accordion>
+<p *ngIf="comments.length == 0 && isComments" class="message">Nema komentara</p>
+<mat-spinner *ngIf="!isComments"></mat-spinner>
+<mat-divider></mat-divider>
+<br><br><br>
+<mat-card *ngIf="isLoggedInUser && isBookUser">
+    <form (submit)="onSaveChanges(saveChangesForm)" #saveChangesForm="ngForm">
+            <span class="radio">
+                <mat-radio-group aria-label="Izaberite opciju" name="typeOfAction" ngModel (change)="onChange($event)">
+                        <mat-radio-button value="Completed">Procitao/la sam </mat-radio-button>
+                        <mat-radio-button value="Reading">Trenutno citam</mat-radio-button>
+                        <mat-radio-button value="Wishlist" *ngIf="!isOnWishlist">Stavi na listu za citanje</mat-radio-button>
+                        <mat-radio-button value="NotWishlist" *ngIf="isOnWishlist">Ukloni sa liste za citanje</mat-radio-button> 
+                </mat-radio-group>
+            </span>
+            <br><br>
+            <mat-divider></mat-divider>
+            <span *ngIf="currentStatus == 'Reading'">
+                <h3><b>Progres citanja knjige:</b></h3>
+                <br>
+                <mat-progress-bar mode="determinate" [value]="percentageOfReadBook"></mat-progress-bar>
+                <br>
+                <mat-form-field>
+                    <mat-label>Unesite broj strana koji ste procitali</mat-label>
+                    <input matInput type="number" name="readPages" ngModel>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Unesite ukupan broj strana</mat-label>
+                    <input matInput type="number" name="numberOfPages" ngModel>
+                </mat-form-field>
+            </span>
+            <br><br>
+        <button mat-raised-button color="accent" type="submit">Sacuvaj izmene</button>
+    </form>
+</mat-card>
+<mat-spinner *ngIf="!isBookUser && isLoggedInUser"></mat-spinner>
+<mat-divider></mat-divider>
+<br><br><br>
+<mat-card *ngIf="isLoggedInUser && (percentageOfReadBook >= 50 || currentStatus == 'Completed')">
+    <h3><b>Unesite komentar: </b></h3>
+    <form (submit)="onComment(commentForm)" #commentForm="ngForm">
+        <mat-form-field>
+            <input matInput type="number"
+            name="review"
+            ngModel
+            placeholder="Unesite ocenu"
+            #reviewInput="ngModel"
+            required
+            min="1"
+            max="10"
+            >
+            <mat-error *ngIf="reviewInput.invalid">Molimo unesite ispravnu ocenu [1-10]</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <textarea matInput
+            name="content"
+            ngModel
+            placeholder="Unesite komentar"
+            #contentInput="ngModel"
+            maxlength="1000"
+            >
+            </textarea>
+            <mat-error *ngIf="contentInput.invalid">Komentar ne sme imati vise od 1000 karaktera</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Komentarisi</button>
+    </form>
+</mat-card>

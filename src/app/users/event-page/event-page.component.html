@@ -1,0 +1,96 @@
+<mat-card *ngIf="pickedEvent">
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <b>Kreator: </b>&nbsp;&nbsp;&nbsp;
+                {{pickedEvent.creator}}
+            </mat-list-item>
+            <mat-list-item>
+                <b>Naziv:  </b>&nbsp;&nbsp;&nbsp;
+                {{pickedEvent.name}}
+            </mat-list-item>
+            <mat-list-item>
+                <span *ngIf="pickedEvent.isActive">
+                    <b>Aktivan: </b>&nbsp;&nbsp;&nbsp; DA
+                </span>
+                <span *ngIf="!pickedEvent.isActive">
+                    <b>Aktivan: </b>&nbsp;&nbsp;&nbsp; NE
+                </span>
+            </mat-list-item>
+            <mat-list-item>
+                <span *ngIf="pickedEvent.isPrivate">
+                    <b>Privatan: </b>&nbsp;&nbsp;&nbsp; DA
+                </span>
+                <span *ngIf="!pickedEvent.isPrivate">
+                    <b>Privatan: </b>&nbsp;&nbsp;&nbsp; NE
+                </span>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Datum pocetka:  </b>&nbsp;&nbsp;&nbsp;
+                {{pickedEvent.beginDate | date: 'yyyy-MM-dd'}}
+            </mat-list-item>
+            <mat-list-item>
+                <span *ngIf="pickedEvent.endDate">
+                    <b>Kraj dogadjaja:</b>&nbsp;&nbsp;&nbsp; {{pickedEvent.endDate | date: 'yyyy-MM-dd'}}
+                </span>
+                <span *ngIf="!pickedEvent.endDate">
+                    <b>Kraj dogadjaja:</b>&nbsp;&nbsp;&nbsp; Nema kraja
+                </span>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Kratak opis:  </b>&nbsp;&nbsp;&nbsp;
+                {{pickedEvent.description}}
+            </mat-list-item>
+        </mat-list>
+        <br><br>
+        <span *ngIf="isCreator">
+            <button mat-raised-button color="primary" (click)="onOpenEvent()" *ngIf="!pickedEvent.isActive">Otvori dogadjaj</button>
+            <button mat-raised-button color="warn" (click)="onCloseEvent()" *ngIf="pickedEvent.isActive">Zatvori dogadjaj</button>
+        </span>
+        <br>
+        <span *ngIf="!isParticipating">
+            <button mat-raised-button color="primary" (click)="onJoinEvent()">Pridruzi se</button>
+        </span>
+        <span *ngIf="isParticipating">
+            <b>Pridruzeni ste</b>
+        </span>
+    </mat-card-content>
+</mat-card>
+<br>
+<mat-accordion *ngIf="userMessages.length > 0">
+    <mat-expansion-panel *ngFor="let message of userMessages">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <b>{{message.user}}</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        {{message.message}}
+    </mat-expansion-panel>
+</mat-accordion>
+<br><br>
+<mat-card *ngIf="isParticipating && isActive">
+    <form (submit)="onMessage(messageForm)" #messageForm="ngForm">
+        <mat-form-field>
+            <input matInput type="text"
+            name="message"
+            ngModel
+            placeholder="Unesite poruku"
+            #messageInput="ngModel"
+            required
+            >
+            <mat-error *ngIf="messageInput.invalid">Molimo unesite poruku</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Komentarisi</button>
+    </form>
+</mat-card>
+<br>
+<mat-accordion *ngIf="isActive && messages.length > 0">
+    <mat-expansion-panel *ngFor="let message of messages">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <b>{{message.user}}</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        {{message.message}}
+    </mat-expansion-panel>
+</mat-accordion>

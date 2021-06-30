@@ -1,0 +1,20 @@
+mat-form-field{
+    width: 100%;
+}
+
+.user-image {
+    width: 30%;
+}
+
+.user-image img {
+    width: 30%;
+}
+
+.message {
+    color: red;
+}
+
+.book-request-item{
+    background-color: gray;
+}
+

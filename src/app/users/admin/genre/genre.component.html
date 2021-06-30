@@ -1,0 +1,38 @@
+<mat-card>
+    <mat-card-title>
+        <h3><b>Dodavanje zanra:</b></h3>
+    </mat-card-title>
+    <form (submit)="onAddGenre(genreForm)" #genreForm="ngForm">
+        <mat-form-field>
+            <input matInput type="text" 
+            name="genre"
+            ngModel
+            placeholder="Naziv zanra"
+            #genreInput="ngModel"
+            required
+            >
+            <mat-error *ngIf="genreInput.invalid">Molimo unesite naziv zanra</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Dodajte zanr</button>
+    </form>
+</mat-card>
+<mat-divider></mat-divider>
+<br><br>
+<mat-card *ngIf="genres">
+    <mat-card-title>
+        <h3><b>Brisanje zanra:</b></h3>
+    </mat-card-title>
+    <form (submit)="onDeleteGenre(deleteGenreForm)" #deleteGenreForm="ngForm">
+            <mat-form-field>
+                    <mat-label>Izaberite zanr za brisanje</mat-label> 
+                    <mat-select name="genre" ngModel required #genreInput="ngModel">
+                        <mat-option *ngFor="let genre of stringGenres" [value]="genre">{{genre}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="genreInput.invalid">Molimo izaberite zanr za brisanje</mat-error>
+                </mat-form-field>
+            <button mat-raised-button color="warn" type="submit">Izbrisi zanr</button>
+        </form>
+</mat-card>
+<mat-error>
+    {{ message }}
+</mat-error>

@@ -1,0 +1,39 @@
+<mat-card *ngIf="bookRequests">
+    <mat-list *ngIf="bookRequests.length>0">
+        <mat-list-item *ngFor="let request of bookRequests">
+            <h3 matLine>
+                <b>Korisnik:</b> {{request.username}}</h3>
+            <h3 matLine class="book-image">
+                <img [src]="request.imagePath" [alt]="request.username">
+            </h3>
+            <p matLine>
+                <span>
+                    <b>Naziv:</b> {{request.name}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Autori:</b> {{request.authors}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Datum izdavanja:</b> {{request.publishedDate | date: 'yyyy-MM-dd'}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Zanrovi:</b> {{request.genres}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Opis:</b> {{request.description}} </span>
+            </p>
+            <mat-action-list>
+                <button mat-button color="primary" (click)="onAccept(request)">Prihvati</button>
+                <button mat-button color="warn" (click)="onDecline(request)">Odbaci</button>
+            </mat-action-list>
+        </mat-list-item>
+    </mat-list>
+    <div *ngIf="bookRequests.length<=0" class="message">
+        Nema zahteva za odobravanje knjiga!
+    </div>
+</mat-card>
+<mat-spinner *ngIf="!bookRequests"></mat-spinner>

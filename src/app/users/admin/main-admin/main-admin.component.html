@@ -1,0 +1,349 @@
+<mat-card *ngIf="loggedInUser && !isSpinner">
+    <mat-card-title>
+        Informacije o profilu:
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <img mat-card-image [src]="loggedInUser.imagePath" [alt]="loggedInUser.username" class="profile_image">
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <b>Ime: </b>&nbsp;&nbsp;&nbsp; {{loggedInUser.name}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Prezime: </b>&nbsp;&nbsp;&nbsp; {{loggedInUser.surrname}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Datum rodjenja: </b>&nbsp;&nbsp;&nbsp; {{loggedInUser.dateOfBirth | date: 'yyyy-MM-dd'}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Grad stanovanja: </b>&nbsp;&nbsp;&nbsp; {{loggedInUser.city}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Drzava stanovanja: </b>&nbsp;&nbsp;&nbsp; {{loggedInUser.country}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Korisnicko ime: </b>&nbsp;&nbsp;&nbsp; {{loggedInUser.username}}
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+                <b>Email: </b>&nbsp;&nbsp;&nbsp; {{loggedInUser.email}}
+            </mat-list-item>
+            <a mat-raised-button color="primary" routerLink="/change_user_attribute">Promeni</a>
+        </mat-list>
+    </mat-card-content>
+</mat-card>
+<mat-spinner *ngIf="isSpinner"></mat-spinner>
+<mat-accordion *ngIf="isBooksDone && isBookUsersDone">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <b>Pregled procitanih knjiga:</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list *ngIf="completedBooks.length>0">
+            <mat-list-item *ngFor="let book of completedBooks; last as last">
+                <h3 matLine class="book-image">
+                    <img [src]="book.imagePath" [alt]="book.name">
+                </h3>
+                <p matLine>
+                    <span>
+                        <b>Naziv knjige:</b> {{book.name}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Autori knjige:</b> {{book.authors}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Datum izdavanja:</b> {{book.publishDate | date: 'yyyy-MM-dd'}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Zanrovi:</b> {{book.genres}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Opis:</b> {{book.description}} </span>
+                </p>
+                <p matLine>
+                    <span *ngIf="book.averageReview != 0">
+                        <b>Prosecna ocena:</b> {{book.averageReview}} </span>
+                    <span *ngIf="book.averageReview == 0">
+                        <b>Prosecna ocena:</b> -
+                    </span>
+                </p>
+                <button matLine mat-raised-button color="accent" (click)="onPickedBook(book._id)">
+                    Idite na stranicu knjige
+                </button>
+                <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+            </mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <b>Pregled knjiga koje trenutno citate:</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list *ngIf="readingBooks.length>0">
+            <mat-list-item *ngFor="let book of readingBooks; last as last">
+                <h3 matLine class="book-image">
+                    <img [src]="book.imagePath" [alt]="book.name">
+                </h3>
+                <p matLine>
+                    <span>
+                        <b>Naziv knjige:</b> {{book.name}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Autori knjige:</b> {{book.authors}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Datum izdavanja:</b> {{book.publishDate | date: 'yyyy-MM-dd'}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Zanrovi:</b> {{book.genres}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Opis:</b> {{book.description}} </span>
+                </p>
+                <p matLine>
+                    <span *ngIf="book.averageReview != 0">
+                        <b>Prosecna ocena:</b> {{book.averageReview}} </span>
+                    <span *ngIf="book.averageReview == 0">
+                        <b>Prosecna ocena:</b> -
+                    </span>
+                </p>
+                <button matLine mat-raised-button color="accent" (click)="onPickedBook(book._id)">
+                    Idite na stranicu knjige
+                </button>
+                <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+            </mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <b>Pregled knjiga na listi za citanje:</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list *ngIf="wishlistBooks.length>0">
+            <mat-list-item *ngFor="let book of wishlistBooks; last as last">
+                <h3 matLine class="book-image">
+                    <img [src]="book.imagePath" [alt]="book.name">
+                </h3>
+                <p matLine>
+                    <span>
+                        <b>Naziv knjige:</b> {{book.name}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Autori knjige:</b> {{book.authors}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Datum izdavanja:</b> {{book.publishDate | date: 'yyyy-MM-dd'}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Zanrovi:</b> {{book.genres}} </span>
+                </p>
+                <p matLine>
+                    <span>
+                        <b>Opis:</b> {{book.description}} </span>
+                </p>
+                <p matLine>
+                    <span *ngIf="book.averageReview != 0">
+                        <b>Prosecna ocena:</b> {{book.averageReview}} </span>
+                    <span *ngIf="book.averageReview == 0">
+                        <b>Prosecna ocena:</b> -
+                    </span>
+                </p>
+                <mat-action-list>
+                    <button mat-raised-button color="warn" (click)="removeFromWishlist(book._id)">Ukloni sa liste</button>
+                </mat-action-list>
+                <button matLine mat-raised-button color="accent" (click)="onPickedBook(book._id)">
+                    Idite na stranicu knjige
+                </button>
+                <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+            </mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+</mat-accordion>
+<mat-spinner *ngIf="!(isBooksDone && isBookUsersDone)"></mat-spinner>
+<br><br><br>
+<h3><b>VASI KOMENTARI:</b></h3>
+<table *ngIf="isComments && bookComments.length > 0">
+    <thead>
+        <th>Naziv knjige</th>
+        <th>Autori knjige</th>
+        <th>Ocena</th>
+        <th>Komentar</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let comment of bookComments">
+            <td>
+                <button mat-button (click)="onPickedBook(comment.bookId)">
+                    {{comment.name}}
+                </button>
+            </td>
+            <td>{{comment.authors}}</td>
+            <td>{{comment.review}}</td>
+            <td>{{comment.content}}</td>
+            <td><button mat-raised-button color="accent"
+                (click)="onChangeComment(comment.commentId)">Promeni</button></td>
+        </tr>
+    </tbody>
+</table>
+<p *ngIf="bookComments.length == 0 && isComments" class="message">Nema komentara</p>
+<mat-spinner *ngIf="!isComments"></mat-spinner>
+<br><br><br>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <b>
+            <i>Zahtevi za registraciju:</i>
+        </b>
+    </mat-expansion-panel-header>
+    <mat-list *ngIf="userRequests.length>0">
+        <mat-list-item *ngFor="let request of userRequests">
+            <h3 matLine>
+                <b>Korisnik:</b> {{request.username}}</h3>
+            <h3 matLine class="user-image">
+                <img [src]="request.imagePath" [alt]="request.username">
+            </h3>
+            <p matLine>
+                <span>
+                    <b>Ime:</b> {{request.name}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Prezime:</b> {{request.surrname}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Datum rodjenja:</b> {{request.dateOfBirth | date: 'yyyy-MM-dd'}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Grad:</b> {{request.city}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Drzava:</b> {{request.country}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>E-mail:</b> {{request.email}} </span>
+            </p>
+            <mat-action-list>
+                <button mat-button color="primary" (click)="onAccept(request)">Prihvati</button>
+                <button mat-button color="warn" (click)="onDecline(request)">Odbaci</button>
+            </mat-action-list>
+        </mat-list-item>
+    </mat-list>
+    <div *ngIf="userRequests.length<=0">
+        Nema zahteva za registraciju!
+    </div>
+</mat-expansion-panel>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <b>
+            <i>Registrovani korisnici:</i>
+        </b>
+    </mat-expansion-panel-header>
+    <mat-list *ngIf="regularUsers.length>0">
+        <mat-list-item *ngFor="let user of regularUsers">
+            <h3 matLine>
+                <b>Korisnik:</b> {{user.username}}</h3>
+            <h3 matLine class="user-image">
+                <img [src]="user.imagePath" [alt]="user.username">
+            </h3>
+            <p matLine>
+                <span>
+                    <b>Ime:</b> {{user.name}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Prezime:</b> {{user.surrname}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Datum rodjenja:</b> {{user.dateOfBirth | date: 'yyyy-MM-dd'}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Grad:</b> {{user.city}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Drzava:</b> {{user.country}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>E-mail:</b> {{user.email}} </span>
+            </p>
+            <mat-action-list>
+                <button mat-button color="primary" (click)="onUpgrade(user)">Postavi za moderatora</button>
+            </mat-action-list>
+        </mat-list-item>
+    </mat-list>
+    <div *ngIf="regularUsers.length<=0">
+        Nema registrovanih korisnika!
+    </div>
+</mat-expansion-panel>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <b>
+            <i>Moderatori:</i>
+        </b>
+    </mat-expansion-panel-header>
+    <mat-list *ngIf="moderatorUsers.length>0">
+        <mat-list-item *ngFor="let user of moderatorUsers">
+            <h3 matLine>
+                <b>Korisnik:</b> {{user.username}}</h3>
+            <h3 matLine class="user-image">
+                <img [src]="user.imagePath" [alt]="user.username">
+            </h3>
+            <p matLine>
+                <span>
+                    <b>Ime:</b> {{user.name}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Prezime:</b> {{user.surrname}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Datum rodjenja:</b> {{user.dateOfBirth | date: 'yyyy-MM-dd'}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Grad:</b> {{user.city}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>Drzava:</b> {{user.country}} </span>
+            </p>
+            <p matLine>
+                <span>
+                    <b>E-mail:</b> {{user.email}} </span>
+            </p>
+            <mat-action-list>
+                <button mat-button color="primary" (click)="onDemote(user)">Ukloni sa moderatora</button>
+            </mat-action-list>
+        </mat-list-item>
+    </mat-list>
+    <div *ngIf="moderatorUsers.length<=0">
+        Nema moderatora!
+    </div>
+</mat-expansion-panel>
+<br><br>
